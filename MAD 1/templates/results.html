@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static\songs\css\results.css">
+    <title>Document</title>
+    <link rel="stylesheet" href="\static\css\demo.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+</head>
+<body>
+   
+        <form id="songs" >
+
+    <div class="container">
+        <input type="text" name="user_ID" value={{ userID }} hidden>
+        <div class="row">
+            {% for song in search_data %}
+           <div class="col-md-3">
+                    {% set another = 'https://picsum.photos/20' ~ loop.index %}
+                    
+                    <div class="musicplayer"  style=" background-image: url({{ another }})">
+                        <h1 class=" title"> {{ song.name}} </h1>
+                        <audio class="song" src="{{ song.url }}"></audio> 
+                        <div class=" mp3_button play"></div>
+                    </div>
+                    <input type="checkbox" id="option{{ loop.index }}" name="options" value={{ song.id }}>
+          </div>
+            {% endfor%}
+       </div>
+    </div>
+
+        <br>
+        <input type="text" name="playlist_name" placeholder="Name Your Playlist" required>
+        <button type="submit" > Create playlist</button> 
+        </form>
+        
+        
+     
+</body>
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script> -->
+<script>
+         let form = document.getElementById('songs')
+         form.addEventListener('submit', function(event){
+                                                        event.preventDefault()
+                                                        console.log('hit')
+                                                        let formData = new FormData(form)
+                                                        let data = {
+                                                                        playlist_name: formData.get('playlist_name'),
+                                                                        options: formData.getAll('options'),
+                                                                        use_ID: formData.get('user_ID')
+                                                                        
+                                                                    };
+
+                                                                    fetch('/api/playlist', {
+                                                                                                method: 'POST',
+                                                                                                headers: {
+                                                                                                            'Content-Type': 'application/json'
+                                                                                                         },
+                                                                                                body: JSON.stringify(data)
+                                                                                            })
+                                                                                            .then(response => response.json())
+                                                                                            .then(data => {
+                                                                                                console.log('Success:', data);
+                                                                                                alert(data['massage']);
+                                                                                            })
+                                                        }
+                             )
+
+
+
+
+            document.querySelectorAll('.mp3_button').forEach(button => {
+            button.addEventListener('click', () => {
+                button.classList.toggle('play');
+                button.classList.toggle('pause');
+                const audio = button.parentElement.querySelector('.song')
+                if (button.classList.contains('pause')) {
+                    audio.play();
+
+                } else {
+                    audio.pause();
+                }
+            });
+        });                
+</script>
+
+
+</html>

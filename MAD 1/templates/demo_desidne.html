@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design</title>
+    <link rel="stylesheet" href="\static\css\demo.css">
+    
+</head>
+
+<body>
+
+
+
+<div class="musicplayer"  style=" background-image: url(https://picsum.photos/200)">
+    <h1 class=" title"> SONG NAME jn.wnklfwqjl</h1>
+    <audio class="song" src="\static\songs\Mr_Red_White_and_Blue.mp3"></audio> 
+    <div class=" mp3_button play"></div>
+</div>
+
+<div class="musicplayer"  style=" background-image: url(https://picsum.photos/300)"> 
+    <audio class="song" src="\static\songs\Mr_Red_White_and_Blue.mp3"></audio> 
+    <div class=" mp3_button play"></div>
+</div>
+
+
+<!-- <div class="musicplayer" > </div>
+<div class="musicplayer" > </div>
+
+<div class="musicplayer" > </div>
+<div class="musicplayer" > </div>
+<div class="musicplayer" > </div> -->
+
+
+
+
+    
+</body>
+
+ <script>
+   document.querySelectorAll('.mp3_button').forEach(button => {
+            button.addEventListener('click', () => {
+                button.classList.toggle('play');
+                button.classList.toggle('pause');
+                const audio = button.parentElement.querySelector('.song')
+                if (button.classList.contains('pause')) {
+                    audio.play();
+
+                } else {
+                    audio.pause();
+                }
+            });
+        });
+ </script>
+
+
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form id="test">
+        <input type="number" name="firstNum"  placeholder="please enter number ">
+        <input type="text" name="opper" placeholder=" + , _ , x , / ">
+        <input type="number" name="secondNum" placeholder="please enter number ">
+        <input type="submit">
+    </form>
+
+    <p id="results"></p>
+
+   <form id="getting">
+    <input type="text" name="txt">
+    <input type="submit">
+   </form>
+
+</body>
+
+
+<script>
+
+form = document.getElementById('test')
+results = document.getElementById('results')
+
+form.addEventListener('submit', function(event){
+                                                    event.preventDefault()
+                                                    
+                                                    formdata = new FormData(form)
+
+                                                    let data= {
+                                                                'num1': formdata.get('firstNum'),
+                                                                'opper':formdata.get('opper'),
+                                                                'num2':formdata.get('secondNum')
+                                                              }
+
+                                                    fetch('/api/test', {
+                                                                            method:'POST',
+                                                                            headers:{ 'Content-Type': 'application/json' },
+                                                                            body: JSON.stringify(data)
+                                                                        }
+                                                          ).then( response => {
+                                                            if(!response.ok){console.log('servewr error')};
+                                                            return response.json();
+
+                                                        }).then(data => {
+                                                            console.log(data['massage'])
+                                                            results.innerHTML = data['massage']
+
+                                                        })
+
+                                                }
+                     )
+
+form_get = document.getElementById('getting')
+
+form_get.addEventListener('submit', function(event){ event.preventDefault()
+                                                    
+                                                    formdata = new FormData(form_get)
+                                                    let info =  formdata.get('txt')
+                                                    console.log(info)
+
+                                                    fetch('/api/test/' + info ).then(res=>{return res.json()}).then(data=>{results.innerHTML = data['massage']})
+
+                                                })
+
+</script>
+
+
+</html>

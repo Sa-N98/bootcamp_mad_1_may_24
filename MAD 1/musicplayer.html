@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
+}
+
+.audio-player {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #fff;
+    padding: 10px 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+#play-pause {
+    background: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#play-pause:hover {
+    background: #0056b3;
+}
+
+#seek-bar {
+    width: 300px;
+}
+
+#current-time,
+#duration {
+    font-size: 14px;
+}
+    </style>
+</head>
+<body>
+
+    <div class="audio-player">
+        <audio id="audio" src="C:\Users\Sharonno\Desktop\MAD 1\static\songs\demo.mp3"></audio>
+        <button id="play-pause">Play</button>
+        <input type="range" id="seek-bar" value="0">
+        <span id="current-time">0:00</span> / <span id="duration">0:00</span>
+    </div>
+
+    <script>
+            
+    const audio = document.getElementById('audio');
+    const playPauseButton = document.getElementById('play-pause');
+    const seekBar = document.getElementById('seek-bar');
+    const currentTimeSpan = document.getElementById('current-time');
+    const durationSpan = document.getElementById('duration');
+
+    playPauseButton.addEventListener('click', function() {
+        if (audio.paused) {
+            audio.play();
+            playPauseButton.textContent = 'Pause';
+        } else {
+            audio.pause();
+            playPauseButton.textContent = 'Play';
+        }
+    });
+
+    audio.addEventListener('timeupdate', function() {
+        seekBar.value = (audio.currentTime / audio.duration) * 100;
+        currentTimeSpan.textContent = formatTime(audio.currentTime);
+    });
+
+    audio.addEventListener('loadedmetadata', function() {
+        durationSpan.textContent = formatTime(audio.duration);
+    });
+
+    seekBar.addEventListener('input', function() {
+        const seekTime = (seekBar.value / 100) * audio.duration;
+        audio.currentTime = seekTime;
+    });
+
+    function formatTime(time) {
+        const minutes = Math.floor(time / 60);
+        const seconds = Math.floor(time % 60);
+        return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    }
+;
+
+console.log(audio)
+console.dir(audio)
+
+    </script>
+    
+</body>
+</html>

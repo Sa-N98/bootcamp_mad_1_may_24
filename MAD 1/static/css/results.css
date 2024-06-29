@@ -1,0 +1,11 @@
+.audio-player{
+    border: solid;
+    width: 600px;
+}
+
+audio::-webkit-media-controls-panel {
+    background-color: #ffffff;
+    color: #fff;
+    border-radius: 15px;
+    /* Add more styles as needed */
+  }
